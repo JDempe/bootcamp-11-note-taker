@@ -4,7 +4,7 @@ const uuid = require("../helpers/uuid");
 
 // GET Route for retrieving all the notes
 fb.get("/", (req, res) =>
-  readFromFile("./db/notes.json").then((data) => res.json(JSON.parse(data)))
+  readFromFile("./db/db.json").then((data) => res.json(JSON.parse(data)))
 );
 
 // POST Route for submitting notes
@@ -21,7 +21,7 @@ fb.post("/", (req, res) => {
       text,
     };
 
-    readAndAppend(newNote, "./db/notes.json");
+    readAndAppend(newNote, "./db/db.json");
 
     const response = {
       status: "success",
@@ -37,8 +37,8 @@ fb.post("/", (req, res) => {
 // DELETE Route for a specific note
 fb.delete("/:id", (req, res) => {
   const noteId = req.params.id;
-  console.log("deleting...");
-  readFromFile("./db/notes.json")
+
+  readFromFile("./db/db.json")
     .then((data) => JSON.parse(data))
     .then((json) => {
       // If note.id exists in json, remove it
@@ -46,7 +46,7 @@ fb.delete("/:id", (req, res) => {
         // remove the item from the array
       const result = json.filter((note) => note.id !== noteId);
       // write the new array to the file using writeToFile
-      writeToFile("./db/notes.json", result);
+      writeToFile("./db/db.json", result);
         const response = {
           status: "success",
           body: result,
